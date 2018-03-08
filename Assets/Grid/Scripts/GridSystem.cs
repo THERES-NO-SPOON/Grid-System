@@ -5,38 +5,39 @@ using UnityEngine;
 public class GridSystem : MonoBehaviour {
 
 	public float GridSize = 1;
-	public GameObject Dot;
 	public GameObject Target;
 
-
-	private Vector3 snapPosition = Vector3.zero;
-
-
-	private void Start() {
-		VisualizeGrid();
-	}
+	
+	private Vector3 _snapPosition = Vector3.zero;
 
 
 	private void Update() {
 		if(Target != null) {
-			snapPosition = SnapPosition(Target.transform.position);
+			_snapPosition = SnapPosition(Target.transform.position);
 		}
 	}
 
 
 	private void OnDrawGizmos() {
-		Gizmos.color = Color.yellow;
-		Gizmos.DrawWireCube(snapPosition, Vector3.one * .2f);
+		VisualizeGrid();
+
+		Gizmos.color = Color.white;
+		Gizmos.DrawWireCube(_snapPosition, Vector3.one * .2f);
 	}
 
 
 	private void VisualizeGrid(int size = 5) {
-		int min = -size + 1, max = size;
-		for (int u = min; u < max; u++) {
-			for (int v = min; v < max; v++) {
-				for (int w = min; w < max; w++) {
-					Vector3 position = GridCoordinateToWorld(new Vector3(u, v, w));
-					GameObject dot = Instantiate(Dot, position, transform.rotation, transform);
+		Gizmos.color = Color.yellow;
+
+		int min = -size + 1;
+		for (int u = min; u < size; u++) {
+			for (int v = min; v < size; v++) {
+				for (int w = min; w < size; w++) {
+					Vector3 point = GridCoordinateToWorld(new Vector3(u, v, w));
+					Gizmos.DrawRay(point, transform.forward * GridSize);
+					Gizmos.DrawRay(point, transform.right * GridSize);
+					Gizmos.DrawRay(point, transform.up * GridSize);
+					Gizmos.DrawSphere(point, 0.1f);
 				}
 			}
 		}
