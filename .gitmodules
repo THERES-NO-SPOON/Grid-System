@@ -1,6 +1,0 @@
-[submodule "Dependencies/VRTK"]
-	path = Dependencies/VRTK
-	url = https://github.com/thestonefox/VRTK.git
-[submodule "Dependencies/SteamVR"]
-	path = Dependencies/SteamVR
-	url = https://github.com/ValveSoftware/steamvr_unity_plugin.git
