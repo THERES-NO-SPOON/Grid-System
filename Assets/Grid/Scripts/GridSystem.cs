@@ -9,6 +9,11 @@ public class GridSystem : MonoBehaviour {
 	public float GridSize = 1;
 	public GameObject GridPoint;
 
+	//=0: no restriction
+	//>0: rotation must be N times this value
+	//<0: can only rotate as this grid does
+	public Vector3 RotationRestriction = Vector3.one * 90;
+
 
 	private int size = 6;
 	private BoxCollider trigger;
@@ -29,6 +34,7 @@ public class GridSystem : MonoBehaviour {
 		int max = size/2,
 			min = -max + 1;
 
+		//TODO update grid when grid size is changed
 		for (int u = min; u < max; u++) {
 			for (int v = min; v < max; v++) {
 				for (int w = min; w < max; w++) {
@@ -52,8 +58,8 @@ public class GridSystem : MonoBehaviour {
 	public void TransformOrigin(Vector3 position, Vector3 rotation) {
 		TransformOrigin(position, Quaternion.Euler(rotation));
 	}
-	public void TransformOrigin(Transform transform) {
-		TransformOrigin(transform.position, transform.rotation);
+	public void TransformOrigin(Transform otherTransform) {
+		TransformOrigin(otherTransform.position, otherTransform.rotation);
 	}
 
 
@@ -82,9 +88,27 @@ public class GridSystem : MonoBehaviour {
 	}
 
 
-	//get the world position of the closest grip point
-	public Vector3 SnapPosition(Vector3 worldPosition) {
-		return GridCoordinateToWorld(WorldToGridCoordinate(worldPosition));
+	//get the world transform of the closest grip point
+	public void SnapToGrid(Transform otherTransform, out Vector3 position, out Vector3 rotation) {
+		position = GridCoordinateToWorld(WorldToGridCoordinate(otherTransform.position));
+
+		//TODO restrict rotation!!
+		//Vector3 diff = otherTransform.eulerAngles - transform.eulerAngles;
+		//Vector3 n = new Vector3(
+		//	GetRestrictedAngle(diff.x, transform.eulerAngles.x, RotationRestriction.x),
+		//	GetRestrictedAngle(diff.y, transform.eulerAngles.y, RotationRestriction.y),
+		//	GetRestrictedAngle(diff.z, transform.eulerAngles.z, RotationRestriction.z)
+		//);
+		//rotation = transform.eulerAngles + n;
+
+		rotation = transform.eulerAngles;
+	}
+
+
+	private float GetRestrictedAngle(float angle, float gridAngle, float restriction) {
+		if (restriction > 0)		return Mathf.RoundToInt(angle / restriction) * restriction;
+		else if (restriction < 0)	return gridAngle;
+		else						return angle;
 	}
 
 }
