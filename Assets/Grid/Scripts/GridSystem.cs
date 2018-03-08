@@ -2,42 +2,42 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(BoxCollider))]
+[RequireComponent(typeof(Rigidbody))]
 public class GridSystem : MonoBehaviour {
 
 	public float GridSize = 1;
-	public GameObject Target;
-
-	
-	private Vector3 _snapPosition = Vector3.zero;
+	public GameObject GridPoint;
 
 
-	private void Update() {
-		if(Target != null) {
-			_snapPosition = SnapPosition(Target.transform.position);
-		}
-	}
+	private int size = 6;
+	private BoxCollider trigger;
+	private Rigidbody rb;
 
 
-	private void OnDrawGizmos() {
+	private void Start() {
+		rb = GetComponent<Rigidbody>();
+
+		trigger = GetComponent<BoxCollider>();
+		trigger.size = Vector3.one * size * GridSize;
+
 		VisualizeGrid();
-
-		Gizmos.color = Color.white;
-		Gizmos.DrawWireCube(_snapPosition, Vector3.one * .2f);
 	}
 
 
-	private void VisualizeGrid(int size = 5) {
-		Gizmos.color = Color.yellow;
+	private void VisualizeGrid() {
+		int max = size/2,
+			min = -max + 1;
 
-		int min = -size + 1;
-		for (int u = min; u < size; u++) {
-			for (int v = min; v < size; v++) {
-				for (int w = min; w < size; w++) {
-					Vector3 point = GridCoordinateToWorld(new Vector3(u, v, w));
-					Gizmos.DrawRay(point, transform.forward * GridSize);
-					Gizmos.DrawRay(point, transform.right * GridSize);
-					Gizmos.DrawRay(point, transform.up * GridSize);
-					Gizmos.DrawSphere(point, 0.1f);
+		for (int u = min; u < max; u++) {
+			for (int v = min; v < max; v++) {
+				for (int w = min; w < max; w++) {
+					Vector3 point = new Vector3(u, v, w);
+					Vector3 position = GridCoordinateToWorld(point);
+					float scale = Mathf.Max(0, max - point.magnitude) / max;
+
+					GameObject p = Instantiate(GridPoint, position, transform.rotation, transform);
+					p.transform.localScale *= scale;
 				}
 			}
 		}
