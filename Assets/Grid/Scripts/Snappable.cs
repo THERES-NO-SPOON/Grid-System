@@ -46,7 +46,7 @@ public class Snappable : MonoBehaviour {
 
 
 	private void OnTriggerStay(Collider other) {
-		if (grid == null) {
+		if (interactableObject.IsGrabbed() && grid == null) {
 			//get the interacting grid system
 			GridSystem someGrid = other.GetComponent<GridSystem>();
 			if (someGrid != null) {
