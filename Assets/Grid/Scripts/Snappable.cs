@@ -9,6 +9,7 @@ using VRTK;
 public class Snappable : MonoBehaviour {
 
 	public Material SnapPlaceholderMaterial = null;
+	public Vector3[] SnapPoints;
 
 
 	private GridSystem grid = null;
@@ -23,13 +24,24 @@ public class Snappable : MonoBehaviour {
 	private void Start() {
 		//init VRTK events
 		interactableObject = GetComponent<VRTK_InteractableObject>();
+		interactableObject.InteractableObjectGrabbed += OnGrabbed;
 		interactableObject.InteractableObjectUngrabbed += OnUngrabbed;
 	}
 
 
 	private void Update() {
 		if(clone != null) SnapCloneToSnapPoint();
-	
+
+	}
+
+
+	private void OnDrawGizmos() {
+		if (SnapPoints != null) {
+			Gizmos.color = Color.yellow;
+			foreach (Vector3 snapPoint in SnapPoints) {
+				Gizmos.DrawSphere(transform.TransformPoint(snapPoint), 0.005f);
+			}
+		}
 	}
 
 
@@ -39,7 +51,7 @@ public class Snappable : MonoBehaviour {
 			GridSystem someGrid = other.GetComponent<GridSystem>();
 			if (someGrid != null) {
 				grid = someGrid;
-				InitClone();
+				ShowPlaceholder();
 			}
 		}
 	}
@@ -50,12 +62,17 @@ public class Snappable : MonoBehaviour {
 	}
 
 
+	private void OnGrabbed(object sender, InteractableObjectEventArgs e) {
+		
+	}
+
+
 	private void OnUngrabbed(object sender, InteractableObjectEventArgs e) {
 		if(grid != null) SnapMeToSnapPoint();
 	}
 
 
-	private void InitClone() {
+	private void ShowPlaceholder() {
 		clone = Instantiate(gameObject);
 		Destroy(clone.GetComponent<Snappable>());
 		Destroy(clone.GetComponent<Rigidbody>());
@@ -65,6 +82,23 @@ public class Snappable : MonoBehaviour {
 			foreach (Renderer renderer in clone.GetComponentsInChildren<Renderer>()) {
 				renderer.material = SnapPlaceholderMaterial;
 			}
+		}
+
+		HideOriginal();
+	}
+
+
+	private void CleanUp() {
+		Destroy(clone);
+		clone = null;
+		grid = null;
+		HideOriginal(false);
+	}
+
+
+	private void HideOriginal(bool hide=true) {
+		foreach(Renderer renderer in GetComponentsInChildren<Renderer>()) {
+			renderer.enabled = !hide;
 		}
 	}
 
@@ -80,13 +114,6 @@ public class Snappable : MonoBehaviour {
 		transform.position = snapPosition;
 		transform.rotation = snapRotation;
 		CleanUp();
-	}
-
-
-	private void CleanUp() {
-		Destroy(clone);
-		clone = null;
-		grid = null;
 	}
 
 }
