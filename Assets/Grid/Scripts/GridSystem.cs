@@ -69,9 +69,19 @@ public class GridSystem : MonoBehaviour {
 	}
 
 
+	public Quaternion WorldToLocal(Quaternion worldRotation) {
+		return Quaternion.Inverse(transform.rotation) * worldRotation;
+	}
+
+
 	//local position => world position
 	public Vector3 LocalToWorld(Vector3 localPosition) {
 		return transform.TransformPoint(localPosition);
+	}
+
+
+	public Quaternion LocalToWorld(Quaternion localRotation) {
+		return transform.rotation * localRotation;
 	}
 
 
@@ -89,26 +99,29 @@ public class GridSystem : MonoBehaviour {
 
 
 	//get the world transform of the closest grip point
-	public void SnapToGrid(Transform otherTransform, out Vector3 position, out Vector3 rotation) {
+	public void SnapToGrid(Transform otherTransform, out Vector3 position, out Quaternion rotation) {
 		position = GridCoordinateToWorld(WorldToGridCoordinate(otherTransform.position));
-
-		//TODO restrict rotation!!
-		//Vector3 diff = otherTransform.eulerAngles - transform.eulerAngles;
-		//Vector3 n = new Vector3(
-		//	GetRestrictedAngle(diff.x, transform.eulerAngles.x, RotationRestriction.x),
-		//	GetRestrictedAngle(diff.y, transform.eulerAngles.y, RotationRestriction.y),
-		//	GetRestrictedAngle(diff.z, transform.eulerAngles.z, RotationRestriction.z)
-		//);
-		//rotation = transform.eulerAngles + n;
-
-		rotation = transform.eulerAngles;
+		rotation = GetRestrictedRotation(otherTransform.rotation);
 	}
 
 
-	private float GetRestrictedAngle(float angle, float gridAngle, float restriction) {
+	private float GetRestrictedAngle(float angle, float restriction) {
 		if (restriction > 0)		return Mathf.RoundToInt(angle / restriction) * restriction;
-		else if (restriction < 0)	return gridAngle;
+		else if (restriction < 0)	return 0;
 		else						return angle;
+	}
+
+
+	private Quaternion GetRestrictedRotation(Quaternion worldRotation) {
+		Vector3 angles = WorldToLocal(worldRotation).eulerAngles;
+
+		Vector3 restricted = new Vector3(
+			GetRestrictedAngle(angles.x, RotationRestriction.x),
+			GetRestrictedAngle(angles.y, RotationRestriction.y),
+			GetRestrictedAngle(angles.z, RotationRestriction.z)
+		);
+
+		return LocalToWorld(Quaternion.Euler(restricted));
 	}
 
 }

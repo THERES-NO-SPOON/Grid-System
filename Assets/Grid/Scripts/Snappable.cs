@@ -17,7 +17,7 @@ public class Snappable : MonoBehaviour {
 
 
 	private Vector3 snapPosition;
-	private Vector3 snapRotation;
+	private Quaternion snapRotation;
 
 
 	private void Start() {
@@ -72,13 +72,13 @@ public class Snappable : MonoBehaviour {
 	private void SnapCloneToSnapPoint() {
 		grid.SnapToGrid(transform, out snapPosition, out snapRotation);
 		clone.transform.position = snapPosition;
-		clone.transform.eulerAngles = snapRotation;
+		clone.transform.rotation = snapRotation;
 	}
 
 
 	private void SnapMeToSnapPoint() {
 		transform.position = snapPosition;
-		transform.eulerAngles = snapRotation;
+		transform.rotation = snapRotation;
 		CleanUp();
 	}
 

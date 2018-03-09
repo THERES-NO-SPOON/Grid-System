@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028355, g: 0.22571374, b: 0.30692255, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -123,7 +123,7 @@ GameObject:
   m_Component:
   - component: {fileID: 20691186}
   - component: {fileID: 20691187}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RightHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -169,7 +169,7 @@ GameObject:
   - component: {fileID: 61829376}
   - component: {fileID: 61829375}
   - component: {fileID: 61829374}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Camera (eye)
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -260,7 +260,7 @@ GameObject:
   - component: {fileID: 125358897}
   - component: {fileID: 125358899}
   - component: {fileID: 125358898}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -338,7 +338,7 @@ GameObject:
   - component: {fileID: 311098537}
   - component: {fileID: 311098539}
   - component: {fileID: 311098538}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: EventSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -404,7 +404,7 @@ GameObject:
   - component: {fileID: 321009693}
   - component: {fileID: 321009695}
   - component: {fileID: 321009694}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -476,7 +476,7 @@ GameObject:
   - component: {fileID: 364416988}
   - component: {fileID: 364416990}
   - component: {fileID: 364416989}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -551,7 +551,7 @@ GameObject:
   - component: {fileID: 382372372}
   - component: {fileID: 382372374}
   - component: {fileID: 382372373}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: CurrentText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -691,7 +691,7 @@ GameObject:
   m_Component:
   - component: {fileID: 459221050}
   - component: {fileID: 459221051}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Controller (right)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -737,7 +737,7 @@ GameObject:
   m_Component:
   - component: {fileID: 465488942}
   - component: {fileID: 465488943}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: CrosshairPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -782,7 +782,7 @@ GameObject:
   - component: {fileID: 518230511}
   - component: {fileID: 518230513}
   - component: {fileID: 518230512}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Control Hints
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -852,7 +852,7 @@ GameObject:
   - component: {fileID: 529340707}
   - component: {fileID: 529340706}
   - component: {fileID: 529340705}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: LeftController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -982,7 +982,7 @@ GameObject:
   - component: {fileID: 563098838}
   - component: {fileID: 563098837}
   - component: {fileID: 563098836}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: StatusPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1070,7 +1070,7 @@ GameObject:
   m_Component:
   - component: {fileID: 581784078}
   - component: {fileID: 581784079}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: SteamVR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1142,7 +1142,7 @@ GameObject:
   m_Component:
   - component: {fileID: 583354920}
   - component: {fileID: 583354921}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: LeftHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1190,7 +1190,7 @@ GameObject:
   - component: {fileID: 608342552}
   - component: {fileID: 608342551}
   - component: {fileID: 608342550}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: SwitchButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1432,7 +1432,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 681033171}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: '[VRTK]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1467,7 +1467,7 @@ GameObject:
   - component: {fileID: 732142029}
   - component: {fileID: 732142028}
   - component: {fileID: 732142027}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: SelectionPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1556,7 +1556,7 @@ GameObject:
   m_Component:
   - component: {fileID: 806807719}
   - component: {fileID: 806807720}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: '[SteamVR]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1606,7 +1606,7 @@ GameObject:
   - component: {fileID: 834445261}
   - component: {fileID: 834445260}
   - component: {fileID: 834445259}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1705,7 +1705,7 @@ GameObject:
   - component: {fileID: 837893744}
   - component: {fileID: 837893746}
   - component: {fileID: 837893745}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1782,7 +1782,7 @@ GameObject:
   - component: {fileID: 840727699}
   - component: {fileID: 840727698}
   - component: {fileID: 840727697}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1874,7 +1874,7 @@ GameObject:
   - component: {fileID: 855139319}
   - component: {fileID: 855139321}
   - component: {fileID: 855139320}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Simulator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1960,7 +1960,7 @@ GameObject:
   - component: {fileID: 894726622}
   - component: {fileID: 894726621}
   - component: {fileID: 894726620}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RightController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2089,7 +2089,7 @@ GameObject:
   - component: {fileID: 955420854}
   - component: {fileID: 955420856}
   - component: {fileID: 955420855}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2165,7 +2165,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1025811206}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: SDKSetups
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2202,7 +2202,7 @@ GameObject:
   - component: {fileID: 1047206977}
   - component: {fileID: 1047206976}
   - component: {fileID: 1047206975}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: ChooseButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2359,7 +2359,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1068740330}
   - component: {fileID: 1068740331}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: '[VRTK_SDKManager]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2419,7 +2419,7 @@ GameObject:
   - component: {fileID: 1079096546}
   - component: {fileID: 1079096545}
   - component: {fileID: 1079096544}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: '[CameraRig]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2603,7 +2603,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1180682588}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Neck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2636,7 +2636,7 @@ GameObject:
   - component: {fileID: 1230610921}
   - component: {fileID: 1230610923}
   - component: {fileID: 1230610922}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2714,7 +2714,7 @@ GameObject:
   - component: {fileID: 1235017111}
   - component: {fileID: 1235017113}
   - component: {fileID: 1235017112}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Hints
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2795,7 +2795,7 @@ GameObject:
   - component: {fileID: 1235046535}
   - component: {fileID: 1235046534}
   - component: {fileID: 1235046533}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: CancelButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2953,7 +2953,7 @@ GameObject:
   - component: {fileID: 1305476794}
   - component: {fileID: 1305476796}
   - component: {fileID: 1305476795}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Description
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3030,7 +3030,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1316292522}
   - component: {fileID: 1316292523}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: VRSimulatorCameraRig
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3070,8 +3070,8 @@ MonoBehaviour:
   showControlHints: 1
   hideHandsAtSwitch: 0
   resetHandsAtSwitch: 1
-  mouseMovementInput: 0
   lockMouseToView: 1
+  mouseMovementInput: 0
   handMoveMultiplier: 0.2
   handRotationMultiplier: 30
   playerMoveMultiplier: 5
@@ -3110,7 +3110,7 @@ GameObject:
   - component: {fileID: 1343377017}
   - component: {fileID: 1343377019}
   - component: {fileID: 1343377018}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3186,7 +3186,7 @@ GameObject:
   - component: {fileID: 1347579556}
   - component: {fileID: 1347579558}
   - component: {fileID: 1347579557}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3256,7 +3256,7 @@ GameObject:
   - component: {fileID: 1457308889}
   - component: {fileID: 1457308888}
   - component: {fileID: 1457308887}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: SDKSetupSwitcher
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3375,7 +3375,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1537943512}
   - component: {fileID: 1537943513}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Controller (left)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3420,7 +3420,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1595265394}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: '[VRTK_Scripts]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3455,7 +3455,7 @@ GameObject:
   - component: {fileID: 1613791879}
   - component: {fileID: 1613791878}
   - component: {fileID: 1613791877}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3552,7 +3552,7 @@ GameObject:
   - component: {fileID: 1617344990}
   - component: {fileID: 1617344992}
   - component: {fileID: 1617344991}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3627,7 +3627,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1661965119}
   - component: {fileID: 1661965120}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3677,7 +3677,7 @@ GameObject:
   - component: {fileID: 1694591931}
   - component: {fileID: 1694591933}
   - component: {fileID: 1694591932}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Camera (ears)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3731,7 +3731,7 @@ GameObject:
   - component: {fileID: 1899086067}
   - component: {fileID: 1899086066}
   - component: {fileID: 1899086065}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3824,7 +3824,7 @@ GameObject:
   - component: {fileID: 1924744368}
   - component: {fileID: 1924744367}
   - component: {fileID: 1924744366}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Camera (head)
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -3916,7 +3916,7 @@ GameObject:
   - component: {fileID: 1934750734}
   - component: {fileID: 1934750736}
   - component: {fileID: 1934750735}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4026,7 +4026,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1978519942}
   - component: {fileID: 1978519943}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4078,7 +4078,7 @@ GameObject:
   - component: {fileID: 2120581826}
   - component: {fileID: 2120581825}
   - component: {fileID: 2120581824}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
