@@ -1,6 +1,3 @@
 [submodule "../SharedLibs/steamvr_unity_plugin"]
 	path = ../SharedLibs/steamvr_unity_plugin
 	url = https://github.com/ValveSoftware/steamvr_unity_plugin.git
-[submodule "../SharedLibs/VRTK"]
-	path = ../SharedLibs/VRTK
-	url = https://github.com/thestonefox/VRTK.git

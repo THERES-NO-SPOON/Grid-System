@@ -1,11 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using VRTK;
+using Valve.VR.InteractionSystem;
 
 [RequireComponent(typeof(BoxCollider))]
 [RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(VRTK_InteractableObject))]
 public class Snappable : MonoBehaviour {
 
 	public Material SnapPlaceholderMaterial = null;
@@ -14,18 +13,16 @@ public class Snappable : MonoBehaviour {
 
 	private GridSystem grid = null;
 	private GameObject clone = null;
-	private VRTK_InteractableObject interactableObject;
 
 
 	private Vector3 snapPosition;
 	private Quaternion snapRotation;
+	private Rigidbody rb;
+	private bool pickedUp = false;
 
 
 	private void Start() {
-		//init VRTK events
-		interactableObject = GetComponent<VRTK_InteractableObject>();
-		interactableObject.InteractableObjectGrabbed += OnGrabbed;
-		interactableObject.InteractableObjectUngrabbed += OnUngrabbed;
+		rb = GetComponent<Rigidbody>();
 	}
 
 
@@ -46,7 +43,7 @@ public class Snappable : MonoBehaviour {
 
 
 	private void OnTriggerStay(Collider other) {
-		if (interactableObject.IsGrabbed() && grid == null) {
+		if (pickedUp && grid == null) {
 			//get the interacting grid system
 			GridSystem someGrid = other.GetComponent<GridSystem>();
 			if (someGrid != null) {
@@ -62,19 +59,24 @@ public class Snappable : MonoBehaviour {
 	}
 
 
-	private void OnGrabbed(object sender, InteractableObjectEventArgs e) {
-		
+	public void OnPickUp() {
+		pickedUp = true;
 	}
 
 
-	private void OnUngrabbed(object sender, InteractableObjectEventArgs e) {
-		if(grid != null) SnapMeToSnapPoint();
+	public void OnDetachFromHand() {
+		pickedUp = false;
+
+		if (grid != null) SnapMeToSnapPoint();
 	}
 
 
 	private void ShowPlaceholder() {
 		clone = Instantiate(gameObject);
 		Destroy(clone.GetComponent<Snappable>());
+		Destroy(clone.GetComponent<Throwable>());
+		Destroy(clone.GetComponent<Interactable>());
+		Destroy(clone.GetComponent<VelocityEstimator>());
 		Destroy(clone.GetComponent<Rigidbody>());
 		Destroy(clone.GetComponent<Collider>());
 

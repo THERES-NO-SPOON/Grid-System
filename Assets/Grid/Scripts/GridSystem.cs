@@ -17,12 +17,9 @@ public class GridSystem : MonoBehaviour {
 
 	private int size = 6;
 	private BoxCollider trigger;
-	private Rigidbody rb;
 
 
 	private void Start() {
-		rb = GetComponent<Rigidbody>();
-
 		trigger = GetComponent<BoxCollider>();
 		trigger.size = Vector3.one * size * GridSize;
 
