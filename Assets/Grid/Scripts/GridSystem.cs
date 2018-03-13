@@ -96,9 +96,12 @@ public class GridSystem : MonoBehaviour {
 
 
 	//get the world transform of the closest grip point
-	public void SnapToGrid(Transform otherTransform, out Vector3 position, out Quaternion rotation) {
-		position = GridCoordinateToWorld(WorldToGridCoordinate(otherTransform.position));
-		rotation = GetRestrictedRotation(otherTransform.rotation);
+	public void SnapToGrid(Transform otherTransform, out Vector3 snapTo, out Quaternion restrictedRotation) {
+		SnapToGrid(otherTransform.position, otherTransform.rotation, out snapTo, out restrictedRotation);
+	}
+	public void SnapToGrid(Vector3 position, Quaternion rotation, out Vector3 snapTo, out Quaternion restrictedRotation) {
+		snapTo = GridCoordinateToWorld(WorldToGridCoordinate(position));
+		restrictedRotation = GetRestrictedRotation(rotation);
 	}
 
 
