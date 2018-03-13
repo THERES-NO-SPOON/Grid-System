@@ -31,6 +31,13 @@ public class Snappable : MonoBehaviour {
 	private bool pickedUp = false;
 
 
+	private void Start() {
+		Interactable interactable = GetComponent<Interactable>();
+		interactable.onAttachedToHand += OnAttachedToHand;
+		interactable.onDetachedFromHand += OnDetachFromHand;
+	}
+
+
 	private void Update() {
 		if(clone != null) SnapCloneToGrid();
 
@@ -96,12 +103,12 @@ public class Snappable : MonoBehaviour {
 		clone = Instantiate(gameObject);
 
 		//destroy all components but Transform on the clone, we don't need them here
-		List<Component> components = new List<Component>(clone.GetComponents<Component>());
-		foreach (Component component in components) {
-			if(!(component is Transform)) {
-				Destroy(component);
-			}
-		}
+		Destroy(clone.GetComponent<Throwable>());
+		Destroy(clone.GetComponent<VelocityEstimator>());
+		Destroy(clone.GetComponent<Interactable>());
+		Destroy(clone.GetComponent<Snappable>());
+		Destroy(clone.GetComponent<Rigidbody>());
+		Destroy(clone.GetComponent<Collider>());
 
 		//replace the material
 		if (SnapPlaceholderMaterial != null) {
