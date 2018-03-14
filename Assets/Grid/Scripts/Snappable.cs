@@ -21,7 +21,7 @@ public class Snappable : MonoBehaviour {
 	private Vector3 selectedSnapPosition {
 		get {
 			if (selectedSnapPoint == -1) return transform.position;
-			else return transform.TransformPoint(SnapPoints[selectedSnapPoint]);
+			else return transform.position + SnapPoints[selectedSnapPoint];
 		}
 	}
 	private Vector3 snapTo;
@@ -33,8 +33,8 @@ public class Snappable : MonoBehaviour {
 
 	private void Start() {
 		Interactable interactable = GetComponent<Interactable>();
-		interactable.onAttachedToHand += OnAttachedToHand;
-		interactable.onDetachedFromHand += OnDetachFromHand;
+		interactable.onAttachedToHand += OnPickedUp;
+		interactable.onDetachedFromHand += OnReleased;
 	}
 
 
@@ -50,7 +50,7 @@ public class Snappable : MonoBehaviour {
 			for (int i = 0; i < SnapPoints.Length; i++) {
 				bool isSelected = i == selectedSnapPoint;
 				Gizmos.color = isSelected ? Color.red : Color.yellow;
-				Gizmos.DrawSphere(transform.TransformPoint(SnapPoints[i]), 0.005f);
+				Gizmos.DrawSphere(transform.position + SnapPoints[i], 0.005f);
 			}
 		}
 	}
@@ -73,7 +73,7 @@ public class Snappable : MonoBehaviour {
 	}
 
 
-	public void OnAttachedToHand(Hand hand) {
+	public void OnPickedUp(Hand hand) {
 		pickedUp = true;
 
 		//find the snap point that is closest to the attaching controller
@@ -91,7 +91,7 @@ public class Snappable : MonoBehaviour {
 	}
 
 
-	public void OnDetachFromHand(Hand hand) {
+	public void OnReleased(Hand hand) {
 		pickedUp = false;
 		selectedSnapPoint = -1;
 
@@ -137,7 +137,10 @@ public class Snappable : MonoBehaviour {
 
 
 	private void SnapCloneToGrid() {
+		//snap the selected snap point to the grid, calculate the position and rotation for the clone
 		grid.SnapToGrid(selectedSnapPosition, transform.rotation, out snapTo, out restrictedRotation);
+		snapTo -= grid.transform.rotation * SnapPoints[selectedSnapPoint];
+
 		clone.transform.position = snapTo;
 		clone.transform.rotation = restrictedRotation;
 	}
