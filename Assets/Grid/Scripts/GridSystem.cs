@@ -7,7 +7,7 @@ using UnityEngine;
 public class GridSystem : MonoBehaviour {
 
 	public float GridSize = 1;
-	public GameObject GridPoint;
+	public GameObject GridPointPrefab;
 
 	//=0: no restriction
 	//>0: rotation must be N times this value
@@ -17,19 +17,39 @@ public class GridSystem : MonoBehaviour {
 
 	private int size = 6;
 	private BoxCollider trigger;
+	private GameObject container;
 
 
 	private void Start() {
+		//expand trigger to include all points
 		trigger = GetComponent<BoxCollider>();
 		trigger.size = Vector3.one * size * GridSize;
-
 		VisualizeGrid();
+	}
+
+
+	private void OnEnable() {
+		SetEnabled(true);
+	}
+
+
+	private void OnDisable() {
+		SetEnabled(false);
+	}
+
+
+	private void SetEnabled(bool enabled) {
+		if (trigger) trigger.enabled = enabled;
+		container?.SetActive(enabled);
 	}
 
 
 	private void VisualizeGrid() {
 		int max = size/2,
 			min = -max + 1;
+
+		container = new GameObject();
+		container.transform.parent = transform;
 
 		//TODO update grid when grid size is changed
 		for (int u = min; u < max; u++) {
@@ -39,7 +59,7 @@ public class GridSystem : MonoBehaviour {
 					Vector3 position = GridCoordinateToWorld(point);
 					float scale = Mathf.Max(0, max - point.magnitude) / max;
 
-					GameObject p = Instantiate(GridPoint, position, transform.rotation, transform);
+					GameObject p = Instantiate(GridPointPrefab, position, transform.rotation, container.transform);
 					p.transform.localScale *= scale;
 				}
 			}

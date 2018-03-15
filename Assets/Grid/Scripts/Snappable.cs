@@ -9,21 +9,16 @@ public class Snappable : MonoBehaviour {
 
 	public Material SnapPlaceholderMaterial = null;
 	public Vector3[] SnapPoints;
+	public SnapPointDetector SnapPointDetectorPrefab;
 
 
 	//the grid that I'm currently interacting with
-	private GridSystem grid = null;
-	//a placeholder clone representing my transform after snap to the grid
-	private GameObject clone = null;
+	private GridSystem interactingGrid = null;
+	private SnapPointDetector snapTargetDetector = null;
 	//when grabbed by the controller, the snap point which is closest to the controller
 	private int selectedSnapPoint = -1;
-	//world position of the selected snap point
-	private Vector3 selectedSnapPosition {
-		get {
-			if (selectedSnapPoint == -1) return transform.position;
-			else return transform.position + SnapPoints[selectedSnapPoint];
-		}
-	}
+	//a placeholder clone representing my transform after snap to the grid
+	private GameObject clone = null;
 	private Vector3 snapTo;
 	private Quaternion restrictedRotation;
 
@@ -40,7 +35,6 @@ public class Snappable : MonoBehaviour {
 
 	private void Update() {
 		if(clone != null) SnapCloneToGrid();
-
 	}
 
 
@@ -50,18 +44,18 @@ public class Snappable : MonoBehaviour {
 			for (int i = 0; i < SnapPoints.Length; i++) {
 				bool isSelected = i == selectedSnapPoint;
 				Gizmos.color = isSelected ? Color.red : Color.yellow;
-				Gizmos.DrawSphere(transform.position + SnapPoints[i], 0.005f);
+				Gizmos.DrawSphere(GetSnapPoint(i), 0.005f);
 			}
 		}
 	}
 
 
 	private void OnTriggerStay(Collider other) {
-		if (pickedUp && grid == null) {
+		if (pickedUp && interactingGrid == null) {
 			//get the currently interacting grid system
-			GridSystem someGrid = other.GetComponent<GridSystem>();
-			if (someGrid != null) {
-				grid = someGrid;
+			GridSystem grid = other.GetComponent<GridSystem>();
+			if (grid) {
+				interactingGrid = grid;
 				ShowPlaceholder();
 			}
 		}
@@ -69,12 +63,42 @@ public class Snappable : MonoBehaviour {
 
 
 	private void OnTriggerExit(Collider other) {
-		CleanUp();
+		GridSystem grid = other.GetComponent<GridSystem>();
+		if(grid == interactingGrid) CleanUp();
 	}
 
 
 	public void OnPickedUp(Hand hand) {
 		pickedUp = true;
+		FindSnapPointClosestToHolderHand(hand);
+
+		snapTargetDetector = Instantiate(SnapPointDetectorPrefab, transform.position, Quaternion.identity, transform);
+	}
+
+
+	public void OnReleased(Hand hand) {
+		pickedUp = false;
+		selectedSnapPoint = -1;
+
+		if (interactingGrid != null) SnapMeToGrid();
+
+		Destroy(snapTargetDetector);
+	}
+
+
+	public Vector3 GetSnapPoint(int i) {
+		return transform.TransformPoint(SnapPoints[i]);
+	}
+
+
+	public Vector3 GetSelectedSnapPoint() {
+		if (selectedSnapPoint == -1) return transform.position;
+		else return GetSnapPoint(selectedSnapPoint);
+	}
+
+
+	public void FindSnapPointClosestToHolderHand(Hand hand) {
+		selectedSnapPoint = -1;
 
 		//find the snap point that is closest to the attaching controller
 		if (SnapPoints != null && SnapPoints.Length > 0) {
@@ -88,14 +112,6 @@ public class Snappable : MonoBehaviour {
 				}
 			}
 		}
-	}
-
-
-	public void OnReleased(Hand hand) {
-		pickedUp = false;
-		selectedSnapPoint = -1;
-
-		if (grid != null) SnapMeToGrid();
 	}
 
 
@@ -132,14 +148,14 @@ public class Snappable : MonoBehaviour {
 		HideOriginal(false);
 		Destroy(clone);
 		clone = null;
-		grid = null;
+		interactingGrid = null;
 	}
 
 
 	private void SnapCloneToGrid() {
 		//snap the selected snap point to the grid, calculate the position and rotation for the clone
-		grid.SnapToGrid(selectedSnapPosition, transform.rotation, out snapTo, out restrictedRotation);
-		snapTo -= grid.transform.rotation * SnapPoints[selectedSnapPoint];
+		interactingGrid.SnapToGrid(GetSelectedSnapPoint(), transform.rotation, out snapTo, out restrictedRotation);
+		snapTo -= interactingGrid.transform.rotation * SnapPoints[selectedSnapPoint];
 
 		clone.transform.position = snapTo;
 		clone.transform.rotation = restrictedRotation;
