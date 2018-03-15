@@ -12,6 +12,9 @@ public class Snappable : MonoBehaviour {
 	public SnapPointDetector SnapPointDetectorPrefab;
 
 
+	public bool PickedUp { protected set; get; } = false;
+
+
 	//the grid that I'm currently interacting with
 	private GridSystem interactingGrid = null;
 	private SnapPointDetector snapTargetDetector = null;
@@ -21,9 +24,6 @@ public class Snappable : MonoBehaviour {
 	private GameObject clone = null;
 	private Vector3 snapTo;
 	private Quaternion restrictedRotation;
-
-
-	private bool pickedUp = false;
 
 
 	private void Start() {
@@ -50,11 +50,11 @@ public class Snappable : MonoBehaviour {
 	}
 
 
-	private void OnTriggerStay(Collider other) {
-		if (pickedUp && interactingGrid == null) {
+	private void OnTriggerEnter(Collider other) {
+		if (PickedUp && interactingGrid == null) {
 			//get the currently interacting grid system
 			GridSystem grid = other.GetComponent<GridSystem>();
-			if (grid) {
+			if (grid != null) {
 				interactingGrid = grid;
 				ShowPlaceholder();
 			}
@@ -69,20 +69,22 @@ public class Snappable : MonoBehaviour {
 
 
 	public void OnPickedUp(Hand hand) {
-		pickedUp = true;
+		PickedUp = true;
 		FindSnapPointClosestToHolderHand(hand);
 
 		snapTargetDetector = Instantiate(SnapPointDetectorPrefab, transform.position, Quaternion.identity, transform);
+		snapTargetDetector.IgnoreSnappable = this;
 	}
 
 
 	public void OnReleased(Hand hand) {
-		pickedUp = false;
+		PickedUp = false;
 		selectedSnapPoint = -1;
 
 		if (interactingGrid != null) SnapMeToGrid();
 
-		Destroy(snapTargetDetector);
+		Destroy(snapTargetDetector.gameObject);
+		snapTargetDetector = null;
 	}
 
 

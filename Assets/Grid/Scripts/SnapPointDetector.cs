@@ -6,14 +6,18 @@ public class SnapPointDetector : MonoBehaviour {
 
 
 	public float Radius = 0.5f;
-	public GameObject GridPrefab = null;
+	public GridSystem GridPrefab = null;
+	public GridSystem Grid { protected set; get; }
+	
+
+	[HideInInspector]
+	public Snappable IgnoreSnappable = null;
 
 	
 	public Vector3 SnapTargetPosition { protected set; get; }
 	public Quaternion SnapTargetRotation { protected set; get; }
 
-
-	private GridSystem grid;
+	
 	private SphereCollider detector;
 	private List<Snappable> snappablesInRange;
 
@@ -24,8 +28,8 @@ public class SnapPointDetector : MonoBehaviour {
 
 		snappablesInRange = new List<Snappable>();
 
-		grid = Instantiate(GridPrefab).GetComponent<GridSystem>();
-		grid.enabled = false;
+		Grid = Instantiate(GridPrefab);
+		Grid.enabled = false;
 	}
 
 
@@ -45,19 +49,19 @@ public class SnapPointDetector : MonoBehaviour {
 				}
 			}
 
-			grid.enabled = true;
-			grid.transform.position = SnapTargetPosition;
-			grid.transform.rotation = SnapTargetRotation;
+			Grid.enabled = true;
+			Grid.transform.position = SnapTargetPosition;
+			Grid.transform.rotation = SnapTargetRotation;
 		}
 		else {
-			grid.enabled = false;
+			Grid.enabled = false;
 		}
 	}
 
 
-	private void OnTriggerStay(Collider other) {
+	private void OnTriggerEnter(Collider other) {
 		Snappable snappable = other.GetComponent<Snappable>();
-		if(snappable != null && !snappablesInRange.Contains(snappable)) {
+		if(snappable != null && snappable != IgnoreSnappable && !snappable.PickedUp && !snappablesInRange.Contains(snappable)) {
 			snappablesInRange.Add(snappable);
 		}
 	}
@@ -70,7 +74,7 @@ public class SnapPointDetector : MonoBehaviour {
 
 
 	private void OnDestroy() {
-		Destroy(grid.gameObject);
+		Destroy(Grid.gameObject);
 	}
 
 }

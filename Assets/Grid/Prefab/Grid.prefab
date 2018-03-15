@@ -80,7 +80,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f8019be94aa2bd4584740b9451c1391, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GridSize: 1
+  GridSize: 0.04
   GridPointPrefab: {fileID: 1676565565896540, guid: 92c18b53df8cf404c916d676c2c32842,
     type: 2}
   RotationRestriction: {x: 90, y: 90, z: 90}

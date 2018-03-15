@@ -68,7 +68,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eee19600bd6cba84695331fdf74540ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Radius: 0.5
+  Radius: 0.3
+  GridPrefab: {fileID: 114733737518555590, guid: 710859d66997a4240997a120dce17b5c,
+    type: 2}
 --- !u!135 &135326276499085766
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -76,8 +78,8 @@ SphereCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1797223296257286}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.3
   m_Center: {x: 0, y: 0, z: 0}
