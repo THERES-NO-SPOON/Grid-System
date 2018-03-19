@@ -15,6 +15,17 @@ public class SnapPoint {
 	public Vector3 LocalPosition;
 	public SnapPointType Type;
 
+
+	public bool Match(SnapPoint other) {
+		return Match(other.Type);
+	}
+
+
+	public bool Match(SnapPointType otherType) {
+		return (Type == SnapPointType.Stud && otherType == SnapPointType.Tube) ||
+			   (Type == SnapPointType.Tube && otherType == SnapPointType.Stud);
+	}
+
 }
 
 
@@ -22,8 +33,12 @@ public class SnapPoint {
 [RequireComponent(typeof(Rigidbody))]
 public class Snappable : MonoBehaviour {
 
-	public SnapPointDetector SnapPointDetectorPrefab;
+	[Header("Resources")]
+	public SnapTargetDetector SnapTargetDetectorPrefab;
+	public GridSystem GridSystemPrefab;
 	public Material SnapPlaceholderMaterial = null;
+
+	[Header("Snap Points")]
 	public SnapPoint[] SnapPoints;
 
 
@@ -32,7 +47,7 @@ public class Snappable : MonoBehaviour {
 
 	//the grid that I'm currently interacting with
 	private GridSystem interactingGrid = null;
-	private SnapPointDetector snapTargetDetector = null;
+	private SnapTargetDetector snapTargetDetector = null;
 	//when grabbed by the controller, the snap point which is closest to the controller
 	private int selectedSnapPoint = -1;
 	//a placeholder clone representing my transform after snap to the grid
@@ -59,7 +74,7 @@ public class Snappable : MonoBehaviour {
 			for (int i = 0; i < SnapPoints.Length; i++) {
 				bool isSelected = i == selectedSnapPoint;
 				Gizmos.color = isSelected ? Color.red : Color.yellow;
-				Gizmos.DrawSphere(GetSnapPoint(i), 0.005f);
+				Gizmos.DrawSphere(GetSnapPointPosition(i), 0.005f);
 			}
 		}
 	}
@@ -87,8 +102,8 @@ public class Snappable : MonoBehaviour {
 		PickedUp = true;
 		FindSnapPointClosestToHolderHand(hand);
 
-		snapTargetDetector = Instantiate(SnapPointDetectorPrefab, transform.position, Quaternion.identity, transform);
-		snapTargetDetector.IgnoreSnappable = this;
+		snapTargetDetector = Instantiate(SnapTargetDetectorPrefab, transform.position, Quaternion.identity, transform);
+		snapTargetDetector.GrabbedSnappable = this;
 	}
 
 
@@ -104,15 +119,15 @@ public class Snappable : MonoBehaviour {
 
 
 	//get world position of specific snap point
-	public Vector3 GetSnapPoint(int i) {
+	public Vector3 GetSnapPointPosition(int i) {
 		return transform.TransformPoint(SnapPoints[i].LocalPosition);
 	}
 
 
 	//get world position of currently selected snap point
-	public Vector3 GetSelectedSnapPoint() {
+	public Vector3 GetSelectedSnapPointPosition() {
 		if (selectedSnapPoint == -1) return transform.position;
-		else return GetSnapPoint(selectedSnapPoint);
+		else return GetSnapPointPosition(selectedSnapPoint);
 	}
 
 
@@ -180,7 +195,7 @@ public class Snappable : MonoBehaviour {
 
 	private void SnapPlaceholderToGrid() {
 		//snap the selected snap point to the grid, calculate the position and rotation for the placeholder
-		interactingGrid.SnapToGrid(GetSelectedSnapPoint(), transform.rotation, out snapTo, out restrictedRotation);
+		interactingGrid.SnapToGrid(GetSelectedSnapPointPosition(), transform.rotation, out snapTo, out restrictedRotation);
 		snapTo -= interactingGrid.transform.rotation * SnapPoints[selectedSnapPoint].LocalPosition;
 
 		placeholder.transform.position = snapTo;

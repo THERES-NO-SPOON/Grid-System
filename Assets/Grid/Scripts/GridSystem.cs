@@ -80,6 +80,18 @@ public class GridSystem : MonoBehaviour {
 	}
 
 
+	public void SnapOriginTo(Snappable snappable=null, int snapPoint=-1) {
+		if (snappable != null) {
+			transform.parent = snappable.transform;
+			transform.localPosition = snappable.SnapPoints[snapPoint].LocalPosition;
+			transform.localRotation = Quaternion.identity;
+		}
+		else {
+			transform.parent = null;
+		}
+	}
+
+
 	//world position => local position
 	public Vector3 WorldToLocal(Vector3 worldPosition) {
 		return transform.InverseTransformPoint(worldPosition);
