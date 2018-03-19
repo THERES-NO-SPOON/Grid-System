@@ -1,15 +1,30 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Valve.VR.InteractionSystem;
+
+
+[Serializable]
+public class SnapPoint {
+
+	public enum SnapPointType {
+		Stud, Tube
+	}
+
+	public Vector3 LocalPosition;
+	public SnapPointType Type;
+
+}
+
 
 [RequireComponent(typeof(BoxCollider))]
 [RequireComponent(typeof(Rigidbody))]
 public class Snappable : MonoBehaviour {
 
-	public Material SnapPlaceholderMaterial = null;
-	public Vector3[] SnapPoints;
 	public SnapPointDetector SnapPointDetectorPrefab;
+	public Material SnapPlaceholderMaterial = null;
+	public SnapPoint[] SnapPoints;
 
 
 	public bool PickedUp { protected set; get; } = false;
@@ -21,7 +36,7 @@ public class Snappable : MonoBehaviour {
 	//when grabbed by the controller, the snap point which is closest to the controller
 	private int selectedSnapPoint = -1;
 	//a placeholder clone representing my transform after snap to the grid
-	private GameObject clone = null;
+	private GameObject placeholder = null;
 	private Vector3 snapTo;
 	private Quaternion restrictedRotation;
 
@@ -34,7 +49,7 @@ public class Snappable : MonoBehaviour {
 
 
 	private void Update() {
-		if(clone != null) SnapCloneToGrid();
+		if(placeholder != null) SnapPlaceholderToGrid();
 	}
 
 
@@ -64,7 +79,7 @@ public class Snappable : MonoBehaviour {
 
 	private void OnTriggerExit(Collider other) {
 		GridSystem grid = other.GetComponent<GridSystem>();
-		if(grid == interactingGrid) CleanUp();
+		if(grid == interactingGrid) HidePlaceholder();
 	}
 
 
@@ -88,26 +103,29 @@ public class Snappable : MonoBehaviour {
 	}
 
 
+	//get world position of specific snap point
 	public Vector3 GetSnapPoint(int i) {
-		return transform.TransformPoint(SnapPoints[i]);
+		return transform.TransformPoint(SnapPoints[i].LocalPosition);
 	}
 
 
+	//get world position of currently selected snap point
 	public Vector3 GetSelectedSnapPoint() {
 		if (selectedSnapPoint == -1) return transform.position;
 		else return GetSnapPoint(selectedSnapPoint);
 	}
 
 
+	//find the snap point that is closest to the attaching controller
+	//and mark it as the "selected snap point"
 	public void FindSnapPointClosestToHolderHand(Hand hand) {
 		selectedSnapPoint = -1;
 
-		//find the snap point that is closest to the attaching controller
 		if (SnapPoints != null && SnapPoints.Length > 0) {
 			Vector3 attachPoint = transform.InverseTransformPoint(hand.transform.position);
 			float minDistance = Mathf.Infinity;
 			for (int i = 0; i < SnapPoints.Length; i++) {
-				float distance = (attachPoint - SnapPoints[i]).magnitude;
+				float distance = (attachPoint - SnapPoints[i].LocalPosition).magnitude;
 				if (distance < minDistance) {
 					minDistance = distance;
 					selectedSnapPoint = i;
@@ -117,20 +135,24 @@ public class Snappable : MonoBehaviour {
 	}
 
 
+	//show the placeholder (and snap it to the grip on next Update)
 	private void ShowPlaceholder() {
-		clone = Instantiate(gameObject);
+		//clone me
+		placeholder = Instantiate(gameObject);
 
 		//destroy all components but Transform on the clone, we don't need them here
-		Destroy(clone.GetComponent<Throwable>());
-		Destroy(clone.GetComponent<VelocityEstimator>());
-		Destroy(clone.GetComponent<Interactable>());
-		Destroy(clone.GetComponent<Snappable>());
-		Destroy(clone.GetComponent<Rigidbody>());
-		Destroy(clone.GetComponent<Collider>());
+		//TODO is there a better, more generic way to remove components on a gameobject?
+		//	   because there are dependencies amount those components, I can't just get them all and remov them with a for loop
+		Destroy(placeholder.GetComponent<Throwable>());
+		Destroy(placeholder.GetComponent<VelocityEstimator>());
+		Destroy(placeholder.GetComponent<Interactable>());
+		Destroy(placeholder.GetComponent<Snappable>());
+		Destroy(placeholder.GetComponent<Rigidbody>());
+		Destroy(placeholder.GetComponent<Collider>());
 
 		//replace the material
 		if (SnapPlaceholderMaterial != null) {
-			foreach (Renderer renderer in clone.GetComponentsInChildren<Renderer>()) {
+			foreach (Renderer renderer in placeholder.GetComponentsInChildren<Renderer>()) {
 				renderer.material = SnapPlaceholderMaterial;
 			}
 		}
@@ -139,6 +161,16 @@ public class Snappable : MonoBehaviour {
 	}
 
 
+	//hide (destroy) the placeholder
+	private void HidePlaceholder() {
+		HideOriginal(false);
+		Destroy(placeholder);
+		placeholder = null;
+		interactingGrid = null;
+	}
+
+
+	//show/hide the original gameobject
 	private void HideOriginal(bool hide = true) {
 		foreach (Renderer renderer in GetComponentsInChildren<Renderer>()) {
 			renderer.enabled = !hide;
@@ -146,28 +178,20 @@ public class Snappable : MonoBehaviour {
 	}
 
 
-	private void CleanUp() {
-		HideOriginal(false);
-		Destroy(clone);
-		clone = null;
-		interactingGrid = null;
-	}
-
-
-	private void SnapCloneToGrid() {
-		//snap the selected snap point to the grid, calculate the position and rotation for the clone
+	private void SnapPlaceholderToGrid() {
+		//snap the selected snap point to the grid, calculate the position and rotation for the placeholder
 		interactingGrid.SnapToGrid(GetSelectedSnapPoint(), transform.rotation, out snapTo, out restrictedRotation);
-		snapTo -= interactingGrid.transform.rotation * SnapPoints[selectedSnapPoint];
+		snapTo -= interactingGrid.transform.rotation * SnapPoints[selectedSnapPoint].LocalPosition;
 
-		clone.transform.position = snapTo;
-		clone.transform.rotation = restrictedRotation;
+		placeholder.transform.position = snapTo;
+		placeholder.transform.rotation = restrictedRotation;
 	}
 
 
 	private void SnapMeToGrid() {
 		transform.position = snapTo;
 		transform.rotation = restrictedRotation;
-		CleanUp();
+		HidePlaceholder();
 	}
 
 }
